@@ -8,12 +8,19 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 
+import com.example.algamoney.api.security.UsuarioSistema;
+
 public class CustomTokenEnhancer implements TokenEnhancer {
 
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
-        final Map<String, Object> additionalInfo = new HashMap<>();
-        additionalInfo.put("organization", " Token Custom ");
+        
+    	UsuarioSistema usuarioSistema = (UsuarioSistema)authentication.getPrincipal();
+    	
+    	final Map<String, Object> additionalInfo = new HashMap<>();
+        additionalInfo.put("Organização", " Soft Ágil ");
+        additionalInfo.put("nome", usuarioSistema.getUsuario().getNome());
+        
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
         return accessToken;
     }

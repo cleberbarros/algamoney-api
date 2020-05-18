@@ -50,9 +50,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         final TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
         tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), accessTokenConverter()));
-        endpoints.tokenStore(tokenStore()).tokenEnhancer(tokenEnhancerChain)
-        .authenticationManager(authenticationManager)
-        .reuseRefreshTokens(false);  //configuração para quando solicitar o token venha um refresh_token 
+        
+        endpoints
+           .tokenStore(tokenStore())
+           .tokenEnhancer(tokenEnhancerChain)
+           .reuseRefreshTokens(false)  //configuração para quando solicitar o token venha um refresh_token 
+           .authenticationManager(authenticationManager);
     }
 
     @Bean

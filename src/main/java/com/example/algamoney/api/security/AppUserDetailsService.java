@@ -20,6 +20,7 @@ import com.example.algamoney.api.repository.UsuarioRepository;
 @Service
 public class AppUserDetailsService implements UserDetailsService{
 
+		
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
@@ -30,7 +31,8 @@ public class AppUserDetailsService implements UserDetailsService{
 		Usuario usuario = usuarioOptional.orElseThrow(() -> new UsernameNotFoundException("Usuario e/ou senha incorretos!") );
 			
 		
-		return new User(email, usuario.getSenha(), getPermissoes(usuario));
+		//return new User(email, usuario.getSenha(), getPermissoes(usuario));
+		return new UsuarioSistema(usuario, getPermissoes(usuario));
 	}
 
 
