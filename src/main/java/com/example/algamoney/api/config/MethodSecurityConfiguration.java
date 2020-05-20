@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  * @PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CATEGORIA')")*/
 
-@Profile("oauth-security")
+//@Profile("oauth-security")
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MethodSecurityConfiguration extends GlobalMethodSecurityConfiguration{
