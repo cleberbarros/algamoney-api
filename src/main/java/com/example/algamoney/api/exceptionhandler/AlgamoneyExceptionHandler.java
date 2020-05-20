@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -77,6 +79,8 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
+	
+	
 	
 	/*Método para tratar a Exceção DataIntegrityViolationException ou seja, quando não vai uma informação correto. 
 	 * Esse errou ocorreu ao tentar inserir um lançamento com uma categoria que não existe o que deu erro na foreing key
