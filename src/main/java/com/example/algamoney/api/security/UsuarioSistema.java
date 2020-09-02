@@ -10,7 +10,7 @@ import com.example.algamoney.api.model.Usuario;
 public class UsuarioSistema extends User {
 
 	/**
-	 * 
+	 * ESSA CLASSE EXISTE PARA QUE SEJA POSSIVEL PEGAR O NOME DO USUÁRIO EM confif/CustomTokenEnhancer.java
 	 */
 	private static final long serialVersionUID = 1L;
 	private Usuario usuario;

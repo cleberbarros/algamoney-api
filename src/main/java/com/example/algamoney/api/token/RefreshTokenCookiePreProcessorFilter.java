@@ -17,6 +17,9 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+/*ESSA CLASSE TEM A FINALIDADE DE RECUPERAR O REFRESH_TOKEN QUE ESTAVA NO COOKIE QUE FOI CRIADO NA CLASSE
+ * RefreshTokenPostProcessor.java*/
+
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE) //Filtro com uma prioridade muito alta
 public class RefreshTokenCookiePreProcessorFilter implements Filter{

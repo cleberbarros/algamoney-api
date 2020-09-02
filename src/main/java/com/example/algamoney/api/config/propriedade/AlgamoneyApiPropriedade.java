@@ -2,6 +2,9 @@ package com.example.algamoney.api.config.propriedade;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/*CLASSE DE CONFIGURAÇÃO PARA QUE SEJA POSSIVEL DEFINIR CONFIGURAÇÕES NO ARQUIVO CRIADO: application-prod.properties
+ * QUE VAI SUBIR E SER EXECUTADO EM PRODUCAO, ISSO VAI SER DEFINIDO ATRAVÉS DO SUFIXO prod QUANDO FOR REALIZAR O DEPLOY DA APLICAÇÃO*/
+
 @ConfigurationProperties("algamoney")
 public class AlgamoneyApiPropriedade {
 

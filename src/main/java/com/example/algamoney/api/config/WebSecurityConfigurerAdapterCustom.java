@@ -22,7 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
-//@Profile("oauth-security")
+@Profile("oauth-security")
 @EnableWebSecurity
 @EnableResourceServer
 @Configuration
@@ -33,12 +33,14 @@ public class WebSecurityConfigurerAdapterCustom extends WebSecurityConfigurerAda
 	
     
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService; /*AQUI ESTOU INJETANDO A CLASSE secutiry/AppUserDetailsService.java
+     												POIS A MESMA ESTA ANOTADA COMO @Service IMPLEMENTANDO UserDetailsService
+     												E MONTADA PARA BUSCAR USUÁRIOS, SENHAS E PERMISSÕES*/
 
     @Autowired
     public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
         // @formatter:off
-        //auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder.encode("admin")).roles("USER");
+        //auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).roles("USER");
     	auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 

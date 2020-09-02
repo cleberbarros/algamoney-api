@@ -19,6 +19,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import com.example.algamoney.api.config.propriedade.AlgamoneyApiPropriedade;
 
+/* CLASSE PARA PEGAR O REFRESH_TOKEN COLOCAR EM UM COOKIE E APAGAR DO BODY
+ **/
+
 @ControllerAdvice
 public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2AccessToken>{
 
