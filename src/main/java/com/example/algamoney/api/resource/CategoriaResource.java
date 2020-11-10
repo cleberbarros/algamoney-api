@@ -51,7 +51,7 @@ public class CategoriaResource {
 		
 		Categoria categoriaSalva = categoriaRepository.save(categoria);
 		
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaSalva.getCodigo()));
+		publisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaSalva.getCodigo())); //disparando um event para que RecursoCriadoListener preencha o Locale do recurso com o endereço do novo recurso criado
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSalva);
 		

@@ -1,11 +1,12 @@
 package com.example.algamoney.api.resource;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.bouncycastle.asn1.ocsp.ResponderID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.algamoney.api.dto.LancamentoEstatisticaCategoria;
+import com.example.algamoney.api.dto.LancamentoEstatisticaDia;
 import com.example.algamoney.api.event.RecursoCriadoEvent;
 import com.example.algamoney.api.model.Lancamento;
 import com.example.algamoney.api.repository.LancamentoRepository;
@@ -109,6 +112,22 @@ public class LancamentoResource {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
+	//CODIGO AULA APÊNDICE: 22.3
+	@GetMapping("/estatisticas/por-categoria")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')and #oauth2.hasScope('read')")
+	public List<LancamentoEstatisticaCategoria> porCategoria(){
+		
+		return this.lancamentoRepository.porCategoria(LocalDate.now());
+	}
 	
 	
+	//CODIGO AULA APÊNDICE: 22.5
+	@GetMapping("/estatisticas/por-dia")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')and #oauth2.hasScope('read')")
+	public List<LancamentoEstatisticaDia> porDia(){
+		
+		return this.lancamentoRepository.porDia(LocalDate.now());
+	}
+
 }
