@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 
 import com.example.algamoney.api.dto.LancamentoEstatisticaCategoria;
 import com.example.algamoney.api.dto.LancamentoEstatisticaDia;
+import com.example.algamoney.api.dto.LancamentoEstatisticaPessoa;
 import com.example.algamoney.api.model.Categoria_;
 import com.example.algamoney.api.model.Lancamento;
 import com.example.algamoney.api.model.Lancamento_;
@@ -196,6 +197,39 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		return typedQuery.getResultList();
 	}
 
+
+	//CODIGO AULA APÊNDICE: 22.12
+		@Override
+		public List<LancamentoEstatisticaPessoa> porPessoa(LocalDate inicio,LocalDate fim) {
+			CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+			
+			CriteriaQuery<LancamentoEstatisticaPessoa> criteriaQuery = criteriaBuilder.
+						createQuery(LancamentoEstatisticaPessoa.class);  //No generics esta LancamentoEstatisticaCategoria pois é o que queremos devolver 
+			
+			Root<Lancamento> root = criteriaQuery.from(Lancamento.class); //AQUI O Root foi em Lancamento pois a pesquisa sera(From) na tabela de lançamento
+			
+			criteriaQuery.select(criteriaBuilder.construct(LancamentoEstatisticaPessoa.class,
+					 root.get(Lancamento_.tipo),
+					 root.get(Lancamento_.PESSOA),
+					 criteriaBuilder.sum(root.get(Lancamento_.valor))));
+			
+						
+			criteriaQuery.where(
+					
+					criteriaBuilder.greaterThanOrEqualTo(root.get(Lancamento_.dataVencimento), 
+							inicio),
+							criteriaBuilder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento),
+							fim));
+			
+			criteriaQuery.groupBy(root.get(Lancamento_.tipo),
+								  root.get(Lancamento_.pessoa)); //Agrupando pois temos um sum em total que será agrupado por categoria
+			
+			TypedQuery<LancamentoEstatisticaPessoa> typedQuery = manager
+						.createQuery(criteriaQuery);
+						
+			
+			return typedQuery.getResultList();
+		}
 
 
 

@@ -17,6 +17,10 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		
+		<jasperreports.version>6.16.0</jasperreports.version>
+        <jasperreports-functions.version>6.16.0</jasperreports-functions.version>
+        <jasperreports-fonts.version>6.16.0</jasperreports-fonts.version>
 		 
 	</properties>
 
@@ -98,6 +102,27 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
+		
+		<!-- JasperReports -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasperreports.version}</version>
+        </dependency>
+                
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-functions</artifactId>
+            <version>${jasperreports-functions.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
+            <version>${jasperreports-fonts.version}</version>
+        </dependency>
+		
 	</dependencies>
 
 	<build>
