@@ -21,7 +21,7 @@
 		<jasperreports.version>6.16.0</jasperreports.version>
         <jasperreports-functions.version>6.16.0</jasperreports-functions.version>
         <jasperreports-fonts.version>6.16.0</jasperreports-fonts.version>
-		 
+   
 	</properties>
 
 	<dependencies>
@@ -122,7 +122,25 @@
             <artifactId>jasperreports-fonts</artifactId>
             <version>${jasperreports-fonts.version}</version>
         </dependency>
-		
+        
+<!--         APÊNDICE AULA: 22.16 -->
+        <dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+<!--         APÊNDICE AULA: 22.19  INSERINDO O THYMELEAF-->
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-java8time</artifactId>
+        </dependency>
+        
+        
 	</dependencies>
 
 	<build>

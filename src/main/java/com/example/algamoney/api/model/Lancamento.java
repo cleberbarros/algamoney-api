@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "lancamento")
 public class Lancamento {
@@ -144,6 +146,11 @@ public class Lancamento {
 		this.pessoa = pessoa;
 	}
 
+	
+	@JsonIgnore
+	public boolean isReceita() {
+		return TipoLancamento.RECEITA.equals(this.tipo);
+	}
 
 	@Override
 	public int hashCode() {
