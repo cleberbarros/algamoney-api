@@ -2,6 +2,8 @@ package com.example.algamoney.api.service;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -25,10 +27,15 @@ public class PessoaService {
 		
 		/*preciso fazer pessoa.setId(codigo) senão o hibernate vai receber a pessoa vindo no json e no
 		 * sem o codigo e vai entender que será um novo pessoa e vai adicionar ao inves de atualizar*/ 
-		pessoa.setCodigo(codigo);
-		pessoa = pessoaRepository.save(pessoa);
 		
-		return pessoa;
+		pessoa.setCodigo(codigo);
+
+	    pessoa.getContatos().forEach(c -> c.setPessoa(pessoa)); //APENDICE AULA 22.25
+		
+//		pessoa = pessoaRepository.save(pessoa);
+//		
+//		return pessoa;
+	    return pessoaRepository.save(pessoa);
 		
 	}
 
@@ -48,5 +55,11 @@ public class PessoaService {
 		}
 		
 		return pessoaSalva.get();
+	}
+
+	public Pessoa salvar(Pessoa pessoa) {
+		pessoa.getContatos().forEach(c -> c.setPessoa(pessoa)); //APENDICE AULA 22.25
+		
+		return pessoaRepository.save(pessoa);
 	}
 }

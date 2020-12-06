@@ -1,15 +1,21 @@
 package com.example.algamoney.api.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "pessoa")
@@ -27,6 +33,24 @@ public class Pessoa {
 	
 	@Embedded
 	private Endereco endereco;
+	
+	@JsonIgnoreProperties("pessoa") //APENDICE AULA 22.24 ignorando a propriedade pessoa que esta lá em contato e assim evitando recursividade
+	//APENDICE AULA 22.23
+	@Valid
+	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL,
+				    //AULA APENDICE = 22.26
+					orphanRemoval = true)  /*com isso o hibernate vai remover o que estive na base de dados mas não estive mais na lista. 
+										   então caso não passe o contato ele vai apagar o que tiver no banco*/	
+	private List<Contato> contatos;
+
+		
+	public List<Contato> getContatos() {
+		return contatos;
+	}
+
+	public void setContatos(List<Contato> contatos) {
+		this.contatos = contatos;
+	}
 
 	public Long getCodigo() {
 		return codigo;

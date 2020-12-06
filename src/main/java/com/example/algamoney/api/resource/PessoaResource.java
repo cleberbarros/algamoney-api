@@ -69,7 +69,8 @@ public class PessoaResource {
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA')and #oauth2.hasScope('write')")
 	public ResponseEntity<Pessoa>criar (@Valid @RequestBody Pessoa pessoa, HttpServletResponse response){
-		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
+		//Pessoa pessoaSalva = pessoaRepository.save(pessoa);
+		Pessoa pessoaSalva = pessoaService.salvar(pessoa);
 		
 		//aqui estou lançando a acessa que vai ser ouvindo e executada por RecursoCraidoListener
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaSalva.getCodigo())); 
