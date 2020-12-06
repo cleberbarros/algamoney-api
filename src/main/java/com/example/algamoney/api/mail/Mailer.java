@@ -1,17 +1,15 @@
 package com.example.algamoney.api.mail;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -19,6 +17,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import com.example.algamoney.api.model.Lancamento;
+import com.example.algamoney.api.model.Usuario;
 import com.example.algamoney.api.repository.LancamentoRepository;
 
 @Component
@@ -88,5 +87,21 @@ public class Mailer {
 		} catch (MessagingException e) {
 			throw new RuntimeException("Problema com o envio do e-mail",e);
 		}
-	} 
+	}
+	
+	//Aula 22.21
+	public void avisarSobreLancamentosVencidos(
+			List<Lancamento> vencidos, List<Usuario> destinatarios) {
+		
+		Map<String, Object> variaveis = new HashMap<>();
+		variaveis.put("lancamentos", vencidos);
+		
+		//pegando a lista de e-mails usando lambda e collect para converter em uma lista de String
+		List<String> emails = destinatarios.stream()
+				.map(u -> u.getEmail())
+				.collect(Collectors.toList());
+		
+		this.enviarEmail("gnucleber@gmail.com", emails, "Lançamentos Vencidos", "mail/aviso-lancamentos-vencidos", variaveis);
+		
+	}
 }

@@ -11,16 +11,21 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.example.algamoney.api.dto.LancamentoEstatisticaPessoa;
+import com.example.algamoney.api.mail.Mailer;
 import com.example.algamoney.api.model.Lancamento;
 import com.example.algamoney.api.model.Pessoa;
+import com.example.algamoney.api.model.Usuario;
 import com.example.algamoney.api.repository.LancamentoRepository;
 import com.example.algamoney.api.repository.PessoaRepository;
+import com.example.algamoney.api.repository.UsuarioRepository;
 import com.example.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
 
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -31,12 +36,22 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 @Service
 public class LancamentoService {
 	
+	private static final String DESTINATARIOS = "ROLE_PESQUISAR_LANCAMENTO";
+	
+	//APENDICE Aula 22.22
+	private static final Logger logger = LoggerFactory.getLogger(LancamentoService.class);
+	
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
 	@Autowired
 	private LancamentoRepository lancamentoRepository;
 	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private Mailer mailer;
 
 	public Lancamento salvar(@Valid Lancamento lancamento) {
 
@@ -121,8 +136,43 @@ public class LancamentoService {
 	// APÊNDICE AULA: 22.15
 		//                 S M H Dia Mes DiaSemana                    
 	    @Scheduled(cron = "0 0 6 * * *")
-		public void avisarSobreLancamentosVencidos2() {
-			System.out.println(">>>>>>>>>>>>Método sendo executado com Cron...");
+		//@Scheduled(fixedDelay = 1000 * 60 * 30) //equivalente a 30 minutos
+		public void avisarSobreLancamentosVencidos() {
+	    	
+	    	//APENDICE Aula 22.22
+	    	if(logger.isDebugEnabled()) {
+	    		logger.debug("Preparando envio e e-mails e aviso e lançamentos vencidos.");
+	    	}
+	    	
+			
+			List<Lancamento> vencidos = lancamentoRepository.
+					findByDataVencimentoLessThanEqualAndDataPagamentoIsNull(LocalDate.now());
+			
+			//APENDICE Aula 22.22
+			if(vencidos.isEmpty()) {
+				logger.info("Sem lançamento vencidos para aviso.");
+				return;
+			}
+			//APENDICE Aula 22.22
+			logger.info("Existem {} lançamentos vencidos.",vencidos.size());
+			
+			
+			List<Usuario> destinatarios = usuarioRepository.
+					findByPermissoesDescricao(DESTINATARIOS);
+			
+			//APENDICE Aula 22.22
+			if(destinatarios.isEmpty()) {
+				logger.warn("Existem lançamentos vencidos, mas o sistema não encontrou destinatarios validos");
+				return;
+			}
+			
+			
+			//Aula 22.21
+			mailer.avisarSobreLancamentosVencidos(vencidos, destinatarios);
+			
+			
+			//APENDICE Aula 22.22
+			logger.info("Envio de e-mail de aviso concluido!");
 		}
 	
 
