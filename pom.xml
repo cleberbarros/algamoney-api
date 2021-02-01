@@ -21,6 +21,8 @@
 		<jasperreports.version>6.16.0</jasperreports.version>
         <jasperreports-functions.version>6.16.0</jasperreports-functions.version>
         <jasperreports-fonts.version>6.16.0</jasperreports-fonts.version>
+        
+        <aws-java-skd.version>1.11.670</aws-java-skd.version>
    
 	</properties>
 
@@ -139,6 +141,14 @@
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-java8time</artifactId>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk -->
+<!--         Aula 22.30 -->
+		<dependency>
+		    <groupId>com.amazonaws</groupId>
+		    <artifactId>aws-java-sdk</artifactId>
+		    <version>${aws-java-skd.version}</version>
+		</dependency>
         
         
 	</dependencies>
