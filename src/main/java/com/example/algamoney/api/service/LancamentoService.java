@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.example.algamoney.api.dto.LancamentoEstatisticaPessoa;
 import com.example.algamoney.api.mail.Mailer;
@@ -27,6 +28,7 @@ import com.example.algamoney.api.repository.LancamentoRepository;
 import com.example.algamoney.api.repository.PessoaRepository;
 import com.example.algamoney.api.repository.UsuarioRepository;
 import com.example.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
+import com.example.algamoney.api.storage.S3;
 
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -52,6 +54,9 @@ public class LancamentoService {
 	
 	@Autowired
 	private Mailer mailer;
+	
+	@Autowired
+	private S3 s3;
 
 	public Lancamento salvar(@Valid Lancamento lancamento) {
 
@@ -61,6 +66,12 @@ public class LancamentoService {
 		//if(!pessoa.isPresent() || !pessoa.get().getAtivo() ) {
 			throw new PessoaInexistenteOuInativaException();
 		}
+		
+		//APENDICE AULA 22.34
+		if(StringUtils.hasText(lancamento.getAnexo())) {  //SE TIVER TEXTO NO ANEXO
+			s3.salvar(lancamento.getAnexo());
+		}
+		
 		return lancamentoRepository.save(lancamento) ;
 	}
 	
@@ -70,6 +81,14 @@ public class LancamentoService {
 		
 		if( !lancamento.getPessoa().equals(lancamentoSalvo.getPessoa()) ) {
 			validarPessoa(lancamento);
+		}
+		
+		if (StringUtils.isEmpty(lancamento.getAnexo())
+				&& StringUtils.hasText(lancamentoSalvo.getAnexo())){
+			s3.remover(lancamentoSalvo.getAnexo());
+		}else if (StringUtils.hasLength(lancamento.getAnexo())
+				&& !lancamento.getAnexo().equals(lancamentoSalvo.getAnexo())) {
+			s3.substituir(lancamentoSalvo.getAnexo(), lancamento.getAnexo());
 		}
 		
 		BeanUtils.copyProperties(lancamento, lancamentoSalvo, "codigo");
